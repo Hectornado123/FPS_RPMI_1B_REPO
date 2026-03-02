@@ -14,7 +14,13 @@ public class FPController : MonoBehaviour
     [SerializeField] float MaxForce = 1f;
     [SerializeField] float sensitivy = 0.1f;
 
+    [Header("jump and GroundCheck")]
 
+    [SerializeField] float jumpForce = 5f;
+    [SerializeField] bool isGrounded;
+    [SerializeField] Transform groundCheck;
+    [SerializeField] float groundCheckRadius = 0.3f;
+    [SerializeField] LayerMask groundLayer;
     [Header("Player stats bools")]
 
     [SerializeField] bool isSprinting;
@@ -45,7 +51,7 @@ public class FPController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundLayer);
     }
     private void FixedUpdate()
     {
