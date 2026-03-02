@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -45,7 +46,42 @@ public class FPController : MonoBehaviour
     {
         
     }
+    private void FixedUpdate()
+    {
+        Movement();
+    }
 
+    private void LateUpdate()
+    {
+        CameraLook();
+    }
+
+
+    void CameraLook()
+    {
+        transform.Rotate(Vector3.up * lookInput.x * sensitivy);
+
+        lookRotation += (-lookInput.y * sensitivy);
+        lookRotation = Mathf.Clamp(lookRotation, -90, 90);
+        camHolder.transform.localEulerAngles = new Vector3(lookRotation, 0f, 0f);
+
+    }
+
+    void Movement()
+    {
+        Vector3 currentVelocity = rb.linearVelocity;
+        Vector3 targetVelocity = new Vector3(moveInput.x, 0, moveInput.y);
+        targetVelocity *= isCrouching ? crouchSpeed : isSprinting ? sprintSpeed : speed;
+
+        targetVelocity = transform.TransformDirection(targetVelocity);
+
+        Vector3 velocityChange = (targetVelocity - currentVelocity);
+        velocityChange = new Vector3(velocityChange.x, 0, velocityChange.z);
+        velocityChange = Vector3.ClampMagnitude(velocityChange, MaxForce);
+
+
+        rb.AddForce(velocityChange, ForceMode.VelocityChange);
+    }
     #region Input Methods
     public void Onmove(InputAction.CallbackContext context)
     {
