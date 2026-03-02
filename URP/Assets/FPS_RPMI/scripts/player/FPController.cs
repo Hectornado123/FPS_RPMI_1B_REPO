@@ -23,7 +23,7 @@ public class FPController : MonoBehaviour
     #endregion
 
     Rigidbody rb;
-
+    Animator anim;
     Vector2 moveInput;
     Vector2 lookInput;
 
@@ -32,6 +32,7 @@ public class FPController : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        anim.GetComponent<Animator>();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -90,7 +91,10 @@ public class FPController : MonoBehaviour
     }
 
 
-
+    void Jump()
+    {
+        if (isGrounded) rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+    }
 
 
     public void OnLook(InputAction.CallbackContext context)
@@ -100,18 +104,19 @@ public class FPController : MonoBehaviour
     }
     public void OnJump(InputAction.CallbackContext context)
     {
-
+        if (context.performed) Jump();
 
     }
     public void OnCroach(InputAction.CallbackContext context)
     {
-
+        isCrouching = !isCrouching;
+        anim.SetBool("isCrouching", isCrouching);
 
     }
     public void OnSprint(InputAction.CallbackContext context)
     {
-
-
+        if (context.performed && !isCrouching) isSprinting = true;
+        if (context.canceled && isSprinting) isSprinting = false;
     }
     #endregion
 }
