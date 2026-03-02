@@ -38,7 +38,7 @@ public class FPController : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        anim.GetComponent<Animator>();
+        anim=GetComponent<Animator>();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
