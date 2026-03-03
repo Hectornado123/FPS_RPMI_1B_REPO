@@ -53,7 +53,17 @@ public class GunSystem : MonoBehaviour
     void Shoot()
     {
 
+        Vector3 direction = fpsCam.transform.forward;
 
+        direction.x += Random.Range(-spread, spread);
+        direction.y += Random.Range(-spread, spread);
+
+        if (Physics.Raycast(fpsCam.transform.position, direction, out hit, range, impactLayer))
+        {
+            Debug.Log(hit.collider.name);
+
+
+        }
 
 
     }
@@ -61,7 +71,7 @@ public class GunSystem : MonoBehaviour
 
     public void OnShoot(InputAction.CallbackContext context)
     {
-
+        Shoot();
 
 
     }
