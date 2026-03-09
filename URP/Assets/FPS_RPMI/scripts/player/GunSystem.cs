@@ -89,7 +89,12 @@ public class GunSystem : MonoBehaviour
         if (Physics.Raycast(fpsCam.transform.position, direction, out hit, range, impactLayer))
         {
             Debug.Log(hit.collider.name);
+            if (hit.collider.CompareTag("enemy"))
+            {
 
+                HealthEnemy healthEnemy = hit.collider.GetComponent<HealthEnemy>();
+                healthEnemy.TakeDamage(damage);
+            }
 
         }
 
