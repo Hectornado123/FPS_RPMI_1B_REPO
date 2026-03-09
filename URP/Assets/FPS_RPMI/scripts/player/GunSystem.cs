@@ -42,7 +42,7 @@ public class GunSystem : MonoBehaviour
     private void Awake()
     {
         bulletsLeft = amoSize;
-        canShoot = false;
+        canShoot = true;
     }
 
     // Update is called once per frame
