@@ -183,7 +183,7 @@ MonoBehaviour:
   maxHealth: 100
   health: 0
   damagedMat: {fileID: 2100000, guid: 9394c29a6a1cb4f419e4be72c5f37e58, type: 2}
-  deathVfx: {fileID: 0}
+  deathVfx: {fileID: 2099026738581554341, guid: f5353ddb23e0d7446bd223a9656ea819, type: 3}
   enemyRend: {fileID: 4007243601820063157}
 --- !u!1 &6511328223233150093
 GameObject:
