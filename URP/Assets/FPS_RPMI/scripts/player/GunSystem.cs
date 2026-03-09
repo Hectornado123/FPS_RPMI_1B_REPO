@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -25,7 +26,7 @@ public class GunSystem : MonoBehaviour
     [Header("Bullet Management")]
     [SerializeField] int amoSize = 30;
     [SerializeField] int bulletsPerTap = 1;
-    int bulletsLeft;
+    [SerializeField] int bulletsLeft;
 
     [Header("FeedBack references")]
     [SerializeField] GameObject impactEffect;
@@ -47,7 +48,34 @@ public class GunSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (canShoot && shooting && !reloading && bulletsLeft > 0)
+        {
+
+            StartCoroutine(ShootRoutine());
+
+
+        }
+    }
+
+
+    IEnumerator ShootRoutine()
+    {
+
+
+
+        canShoot = false;
+        if (!allowButtonHold) shooting = false;
+        for (int i =0; i < bulletsPerTap; i++)
+        {
+            if (bulletsLeft <= 0) break;
+
+            Shoot();
+            bulletsLeft--;
+
+        }
+
+        yield return new WaitForSeconds(shootingColldown);
+        canShoot = true;
     }
 
     void Shoot()
@@ -67,11 +95,48 @@ public class GunSystem : MonoBehaviour
 
 
     }
-    #region
+
+
+
+    IEnumerator ReloadRoutine()
+    {
+
+        reloading = true;
+
+        yield return new WaitForSeconds(reloadTime);
+        bulletsLeft = amoSize;
+        reloading = false;
+    }
+
+
+    void Reload()
+    {
+
+        if (bulletsLeft < amoSize && !reloading)
+        {
+
+
+            StartCoroutine(ReloadRoutine());
+        }
+    }
+    #region Input Methods
 
     public void OnShoot(InputAction.CallbackContext context)
     {
-        Shoot();
+        if (allowButtonHold)
+        {
+
+            shooting = context.ReadValueAsButton();
+
+
+        }
+        else
+        {
+
+            if (context.performed) shooting = true;
+
+
+        }
 
 
     }
@@ -80,7 +145,7 @@ public class GunSystem : MonoBehaviour
     public void OnReload(InputAction.CallbackContext context)
     {
 
-
+        if (context.performed) Reload();
 
     }
 
